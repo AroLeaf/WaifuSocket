@@ -8,7 +8,7 @@ new WaifuSocket(url, ...args)
 ```
 Returns a new WaifuSocket instance\
 `url`: a valid waifulabs websocket url\
-`args`: any arguments passed into a [ws](https://github.com/websockets/ws) WebSocket
+`args`: any arguments passed into a [ws](https://github.com/websockets/ws) WebSocket (apart from url of course)
 
 ```js
 ws.genGrid(step, seeds)
