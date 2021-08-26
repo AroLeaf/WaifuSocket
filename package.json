@@ -1,0 +1,11 @@
+{
+  "name": "waifulabs",
+  "type": "module",
+  "exports": "./index.js",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "dotenv": "^10.0.0",
+    "jimp": "^0.16.1",
+    "ws": "^8.2.0"
+  }
+}
