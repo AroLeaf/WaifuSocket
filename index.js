@@ -1,29 +1,46 @@
 import WS from 'ws';
+import EventEmitter from 'events';
 
-export default class WaifuSocket extends WS {
+export default class WaifuSocket extends EventEmitter {
   constructor(...args) {
-    super(...args);
+    super();
     this.sequence = 0;
-
-    this.on('open', async () => {
-      await this.request('phx_join', {});
+    this.restart = true;
+    this.connect(...args);
+    this.once('connect', () => {
       this.emit('ready');
     });
+  }
 
-    this.on('message', msg => {
+  connect(...args) {
+    if (!this.restart) return;
+    this.start = this.sequence + 1;
+    this.socket = new WS(...args);
+
+    this.socket.on('open', async () => {
+      await this.request('phx_join', {});
+      this.emit('connect');
+    });
+
+    this.socket.on('message', msg => {
       msg = JSON.parse(msg);
+      console.log(msg);
       const data = {
         event: msg[3],
         data: msg[4],
       }
-      this.emit('data', data);
       this.emit(msg[1], data);
-    })
+    });
+
+    this.socket.on('close', () => {
+      this.connect(...args);
+    });
   }
 
-  send(event, data) {
+  async send(event, data) {
+    if (this.socket?.readyState !== WS.OPEN) await new Promise(res => this.once('connect', res));
     this.sequence++;
-    super.send(JSON.stringify(['0', this.sequence.toString(), 'api', event, data]));
+    this.socket.send(JSON.stringify([this.start.toString(), this.sequence.toString(), 'api', event, data]));
   }
 
   request(event, data) {
@@ -33,6 +50,11 @@ export default class WaifuSocket extends WS {
         resolve(data);
       });
     });
+  }
+
+  close() {
+    this.restart = false;
+    this.socket.close();
   }
 
 
