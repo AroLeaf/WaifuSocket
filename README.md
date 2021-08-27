@@ -11,7 +11,7 @@ Returns a new WaifuSocket instance\
 `args`: any arguments passed into a [ws](https://github.com/websockets/ws) WebSocket (apart from url of course)
 
 ```js
-ws.genGrid(step, seeds)
+await ws.genGrid(step, seeds)
 ```
 Returns an array of 16 new [waifu](#waifu)s\
 `step`: the generation step
@@ -19,7 +19,7 @@ Returns an array of 16 new [waifu](#waifu)s\
 `seeds`: a [waifu](#waifu)'s seeds (optional for step 0)
 
 ```js
-ws.genBig(seeds)
+await ws.genBig(seeds)
 ```
 Returns a [waifu](#waifu) with a big image\
 `seeds`: a [waifu](#waifu)'s seeds
