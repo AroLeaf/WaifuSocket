@@ -24,6 +24,11 @@ await ws.genBig(seeds)
 Returns a [waifu](#waifu) with a big image\
 `seeds`: a [waifu](#waifu)'s seeds
 
+```js
+ws.close()
+```
+Closes the WaifuSocket, please don't leave too many sockets alive at once or Sizigi might restrict API access or something
+
 ### Waifu
 ```js
 {
