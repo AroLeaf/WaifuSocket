@@ -24,7 +24,6 @@ export default class WaifuSocket extends EventEmitter {
 
     this.socket.on('message', msg => {
       msg = JSON.parse(msg);
-      console.log(msg);
       const data = {
         event: msg[3],
         data: msg[4],
@@ -44,8 +43,8 @@ export default class WaifuSocket extends EventEmitter {
   }
 
   request(event, data) {
-    return new Promise((resolve) => {
-      this.send(event, data);
+    return new Promise(async (resolve) => {
+      await this.send(event, data);
       this.once(this.sequence.toString(), data => {
         resolve(data);
       });
@@ -59,8 +58,10 @@ export default class WaifuSocket extends EventEmitter {
 
 
 
-  async genGrid(step=0, currentGirl=[]) {
-    const res = await this.request('generate', { params: { step, currentGirl } });
+  async genGrid(step=0, currentGirl='') {
+    const res = currentGirl
+      ? await this.request('generate', { id: 1, params: { step, currentGirl } })
+      : await this.request('generate', { id: 1, params: { step } });
     return res.data.response.data.newGirls.map(w=>({ seeds: w.seeds, image: Buffer.from(w.image, 'base64') }));
   }
 
