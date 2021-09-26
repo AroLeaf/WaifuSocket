@@ -1,8 +1,6 @@
 import WaifuSocket from './index.js';
 import DotEnv from 'dotenv';
 import fs from 'fs/promises';
-import { base64url } from 'rfc4648';
-import { makeStringEncrypter } from 'string-cipher';
 DotEnv.config();
 
 const ws = new WaifuSocket(process.env.SOCKET);

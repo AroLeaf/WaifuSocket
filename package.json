@@ -3,11 +3,7 @@
   "type": "module",
   "exports": "./index.js",
   "dependencies": {
-    "axios": "^0.21.1",
     "dotenv": "^10.0.0",
-    "jimp": "^0.16.1",
-    "rfc4648": "^1.5.0",
-    "string-cipher": "^1.0.8",
     "ws": "^8.2.0"
   }
 }
