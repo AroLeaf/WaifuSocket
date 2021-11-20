@@ -2,20 +2,20 @@ import WS from 'ws';
 import EventEmitter from 'events';
 
 export default class WaifuSocket extends EventEmitter {
-  constructor(...args) {
+  constructor(url, token) {
     super();
     this.sequence = 0;
     this.restart = true;
-    this.connect(...args);
+    this.connect(url, token);
     this.once('connect', () => {
       this.emit('ready');
     });
   }
 
-  connect(...args) {
+  connect(url, token) {
     if (!this.restart) return;
     this.start = this.sequence + 1;
-    this.socket = new WS(...args);
+    this.socket = new WS(`${url}?token=${token}&vsn=2.0.0`);
 
     this.socket.on('open', async () => {
       await this.request('phx_join', {});
@@ -32,7 +32,7 @@ export default class WaifuSocket extends EventEmitter {
     });
 
     this.socket.on('close', () => {
-      this.connect(...args);
+      this.connect(url, token);
     });
   }
 

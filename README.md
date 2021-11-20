@@ -4,11 +4,11 @@ node module to interface with the new waifulabs v2 websocket api
 
 ## Docs
 ```js
-new WaifuSocket(url, ...args)
+new WaifuSocket(url, token)
 ```
 Returns a new WaifuSocket instance\
-`url`: a valid waifulabs websocket url\
-`args`: any arguments passed into a [ws](https://github.com/websockets/ws) WebSocket (apart from url of course)
+`url`: a waifulabs v2 websocket url without query parameters\
+`token`: your waifulabs v2 token
 
 ```js
 await ws.genGrid(step, seeds)
