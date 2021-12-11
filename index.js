@@ -38,7 +38,6 @@ export default class WaifuSocket extends EventEmitter {
   }
 
   async send(event, data, scope='api') {
-    console.log(event);
     if (this.socket?.readyState !== WS.OPEN) await new Promise(res => this.once('connect', res));
     const seq = this.sequence++;
     this.socket.send(JSON.stringify([this.start.toString(), seq.toString(), scope, event, data]));
