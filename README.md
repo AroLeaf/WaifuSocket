@@ -4,10 +4,10 @@ node module to interface with the new waifulabs v2 websocket api
 
 ## Docs
 ```js
-new WaifuSocket(url, token)
+new WaifuSocket(betacode, token)
 ```
 Returns a new WaifuSocket instance\
-`url`: a waifulabs v2 websocket url without query parameters\
+`betacode`: the hexadecimal bit at the start of the waifulabs v2 beta link\
 `token`: your waifulabs v2 token
 
 ```js

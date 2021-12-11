@@ -13,10 +13,10 @@ export default class WaifuSocket extends EventEmitter {
     setInterval(() => this.send('heartbeat', {}, 'phoenix'), 30000);
   }
 
-  connect(url, token) {
+  connect(betacode, token) {
     if (!this.restart) return;
     this.start = this.sequence + 1;
-    this.socket = new WS(`${url}?token=${token}&vsn=2.0.0`);
+    this.socket = new WS(`wss://${betacode}.beta.waifulabs.com/creator/socket/websocket?token=${token}&vsn=2.0.0`);
 
     this.socket.on('open', async () => {
       await this.request('phx_join', {});
