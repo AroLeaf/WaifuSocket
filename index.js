@@ -6,10 +6,11 @@ export default class WaifuSocket extends EventEmitter {
     super();
     this.sequence = 0;
     this.restart = true;
-    this.connect(url, token);
     this.once('connect', () => {
       this.emit('ready');
     });
+    this.connect(url, token);
+    setInterval(() => this.send('heartbeat', {}, 'phoenix'), 30000);
   }
 
   connect(url, token) {
@@ -36,10 +37,11 @@ export default class WaifuSocket extends EventEmitter {
     });
   }
 
-  async send(event, data) {
+  async send(event, data, scope='api') {
+    console.log(event);
     if (this.socket?.readyState !== WS.OPEN) await new Promise(res => this.once('connect', res));
     const seq = this.sequence++;
-    this.socket.send(JSON.stringify([this.start.toString(), seq.toString(), 'api', event, data]));
+    this.socket.send(JSON.stringify([this.start.toString(), seq.toString(), scope, event, data]));
     return seq;
   }
 
