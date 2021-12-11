@@ -1,22 +1,57 @@
 import WS from 'ws';
 import EventEmitter from 'events';
+import Axios from 'axios';
+import XRegExp from 'xregexp';
+
+const regex = {
+  key: XRegExp('_waifulab_key=(?<key>[^;]*)'),
+  phx: XRegExp(`
+    data-phx-session="(?<phxSession>[^"]*)".*?
+    data-phx-static="(?<phxStatic>[^"]*)".*?
+    id="(?<id>[^"]*)
+  `, 'x'),
+  csfr: XRegExp('<meta charset=.*?content="(?<csrf>[^"]*)'),
+  token: XRegExp('window.authToken = "(?<token>[^"]*)'),
+  image: XRegExp('<div class="collection-card">\\s*<img src="(?<url>.*?)"[\\s\\S]*?>\\s*(?<name>[^>]*)\\n\\s*</div>'),
+}
 
 export default class WaifuSocket extends EventEmitter {
-  constructor(url, token) {
+  constructor(betacode) {
     super();
+    this.rest = Axios.create({
+      baseURL: `https://${betacode}.beta.waifulabs.com`,
+      withCredentials: true,
+      responseType: 'text',
+    });
+    this.betacode = betacode;
     this.sequence = 0;
     this.restart = true;
     this.once('connect', () => {
       this.emit('ready');
     });
-    this.connect(url, token);
     setInterval(() => this.send('heartbeat', {}, 'phoenix'), 30000);
   }
 
-  connect(betacode, token) {
+  async login(cookie) {
+    this.rest.defaults.headers.cookie = `user_remember_me=${cookie}`;
+    const genPage = await this.rest.get('/generate');
+    const { key } = XRegExp.exec(genPage.headers['set-cookie'][0], regex.key)?.groups||{};
+    this.rest.defaults.headers.cookie+= `; _waifulab_key=${key}`;
+    const colPage = await this.rest.get('/collection');
+
+    const { phxSession, phxStatic, id } = XRegExp.exec(colPage.data, regex.phx)?.groups||{};
+    const { csrf } = XRegExp.exec(genPage.data, regex.csfr)?.groups||{};
+    const { token } = XRegExp.exec(genPage.data, regex.token)?.groups||{};
+
+    this.creds = { session: phxSession, static: phxStatic, id, csrf, token }
+    this.connect();
+    return this;
+  }
+
+  connect() {
     if (!this.restart) return;
     this.start = this.sequence + 1;
-    this.socket = new WS(`wss://${betacode}.beta.waifulabs.com/creator/socket/websocket?token=${token}&vsn=2.0.0`);
+    this.socket = new WS(`wss://${this.betacode}.beta.waifulabs.com/creator/socket/websocket?token=${this.creds.token}&vsn=2.0.0`);
 
     this.socket.on('open', async () => {
       await this.request('phx_join', {});
@@ -33,7 +68,7 @@ export default class WaifuSocket extends EventEmitter {
     });
 
     this.socket.on('close', () => {
-      this.connect(url, token);
+      this.connect();
     });
   }
 
@@ -65,7 +100,7 @@ export default class WaifuSocket extends EventEmitter {
 
 
 
-  async genGrid(step=0, currentGirl='') {
+  async genGrid(step=0, currentGirl) {
     const res = currentGirl
       ? await this.request('generate', { id: 1, params: { step, currentGirl } })
       : await this.request('generate', { id: 1, params: { step } });
@@ -78,5 +113,18 @@ export default class WaifuSocket extends EventEmitter {
       image: Buffer.from(res.data.response.data.girl, 'base64'),
       seeds: currentGirl,
     }
+  }
+
+  async fetchCollection() {
+    const page = await this.rest.get('/collection');
+    return XRegExp.match(page.data, regex.image, 'all').map(match => ({...XRegExp.exec(match, regex.image)?.groups}));
+  }
+
+  async save(seeds, girlName) {
+    const res = this.rest.post('/generate/save', {
+      girlName, seeds,
+      _csrf_token: this.creds.csrf,
+    });
+    return res.data;
   }
 }

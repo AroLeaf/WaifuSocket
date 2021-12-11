@@ -3,7 +3,9 @@
   "type": "module",
   "exports": "./index.js",
   "dependencies": {
+    "axios": "^0.24.0",
     "dotenv": "^10.0.0",
-    "ws": "^8.2.0"
+    "ws": "^8.2.0",
+    "xregexp": "^5.1.0"
   }
 }
