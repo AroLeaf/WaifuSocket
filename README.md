@@ -6,9 +6,13 @@ node module to interface with the new waifulabs v2 websocket api
 ```js
 new WaifuSocket(betacode, token)
 ```
-Returns a new WaifuSocket instance\
-`betacode`: the hexadecimal bit at the start of the waifulabs v2 beta link\
-`token`: your waifulabs v2 token
+Returns a new instance of WaifuSocket
+
+```js
+await ws.login(cookie)
+```
+Logs in with your user_remember_me cookie, returns the WaifuSocket instance it was called on\
+`cookie`: your user_remember_me cookie
 
 ```js
 await ws.genGrid(step, seeds)

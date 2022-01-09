@@ -16,14 +16,13 @@ const regex = {
 }
 
 export default class WaifuSocket extends EventEmitter {
-  constructor(betacode) {
+  constructor() {
     super();
     this.rest = Axios.create({
-      baseURL: `https://${betacode}.beta.waifulabs.com`,
+      baseURL: `https://waifulabs.com`,
       withCredentials: true,
       responseType: 'text',
     });
-    this.betacode = betacode;
     this.sequence = 0;
     this.restart = true;
     this.once('connect', () => {
@@ -51,7 +50,7 @@ export default class WaifuSocket extends EventEmitter {
   connect() {
     if (!this.restart) return;
     this.start = this.sequence + 1;
-    this.socket = new WS(`wss://${this.betacode}.beta.waifulabs.com/creator/socket/websocket?token=${this.creds.token}&vsn=2.0.0`);
+    this.socket = new WS(`wss://waifulabs.com/creator/socket/websocket?token=${this.creds.token}&vsn=2.0.0`);
 
     this.socket.on('open', async () => {
       await this.request('phx_join', {});
@@ -113,11 +112,6 @@ export default class WaifuSocket extends EventEmitter {
       image: Buffer.from(res.data.response.data.girl, 'base64'),
       seeds: currentGirl,
     }
-  }
-
-  async fetchCollection() {
-    const page = await this.rest.get('/collection');
-    return XRegExp.match(page.data, regex.image, 'all').map(match => ({...XRegExp.exec(match, regex.image)?.groups}));
   }
 
   async save(seeds, girlName) {
