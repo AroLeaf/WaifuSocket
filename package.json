@@ -2,7 +2,7 @@
   "name": "waifusocket",
   "description": "A module for the Waifulabs v2 websocket API",
   "type": "module",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "author": {
     "name": "AroLeaf",
     "url": "https://leaf.moe"
