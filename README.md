@@ -1,4 +1,5 @@
 # WaifuSocket
+[![npm](https://img.shields.io/npm/v/waifusocket?style=flat-square)](https://npmjs.com/package/waifusocket)
 
 node module to interface with the new waifulabs v2 websocket api
 
