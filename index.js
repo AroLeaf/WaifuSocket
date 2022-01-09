@@ -26,7 +26,7 @@ export default class WaifuSocket extends EventEmitter {
     this.sequence = 0;
     this.restart = true;
     this.once('connect', () => {
-      this.emit('ready');
+      this.emit('ready', this);
     });
     setInterval(() => this.send('heartbeat', {}, 'phoenix'), 30000);
   }
