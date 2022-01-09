@@ -55,7 +55,6 @@ export default class WaifuSocket extends EventEmitter {
    * @returns {Promise<WaifuSocket>} A promise resolving to the WaifuSocket instance `login()` was called on
    */
   async login(cookie) {
-    console.log(cookie);
     if (cookie) this.rest.defaults.headers.cookie = `user_remember_me=${cookie}`;
     const genPage = await this.rest.get('/generate');
     const { key } = XRegExp.exec(genPage.headers['set-cookie'][0], regex.key)?.groups||{};
