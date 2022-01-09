@@ -3,6 +3,11 @@
   "description": "A module for the Waifulabs v2 websocket API",
   "type": "module",
   "version": "1.1.2",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AroLeaf/waifusocket.git"
+  },
+  "homepage": "https://github.com/AroLeaf/waifusocket#readme",
   "author": {
     "name": "AroLeaf",
     "url": "https://leaf.moe"
