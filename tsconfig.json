@@ -1,0 +1,7 @@
+{
+  "files": ["types/index.d.ts"],
+  "typedocOptions": {
+    "entryPoints": ["types/index.d.ts"],
+    "out": "docs"
+  }
+}

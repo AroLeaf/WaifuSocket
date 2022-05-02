@@ -1,7 +1,6 @@
 {
   "name": "waifusocket",
   "description": "A module for the Waifulabs v2 websocket API",
-  "type": "module",
   "version": "1.1.3",
   "repository": {
     "type": "git",
@@ -12,11 +11,18 @@
     "name": "AroLeaf",
     "url": "https://leaf.moe"
   },
-  "exports": "./index.js",
+  "exports": {
+    "import": "./index.mjs",
+    "require": "./index.js"
+  },
   "dependencies": {
-    "axios": "^0.24.0",
-    "dotenv": "^10.0.0",
-    "ws": "^8.2.0",
+    "axios": "^0.27.2",
+    "ws": "^8.6.0",
     "xregexp": "^5.1.0"
-  }
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.31",
+    "typedoc": "^0.22.15"
+  },
+  "types": "index.d.ts"
 }
