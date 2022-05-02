@@ -3,7 +3,7 @@
 
 node module to interface with the new waifulabs v2 websocket api
 
-[Documentation](https://aroleaf.github.io/WaifuSocket/)
+[Documentation](https://waifusocket.leaf.moe/)
 
 ## Install
 ```sh
