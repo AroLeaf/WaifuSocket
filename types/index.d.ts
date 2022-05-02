@@ -75,9 +75,17 @@ export class WaifuSocket {
    * 1: color\
    * 2: details\
    * 3: pose
-   * @param waifu - a waifu or her seeds
    */
   genGrid(step: 0): Promise<grid>;
+  /**
+   * Generates 16 new waifus
+   * @param step - 
+   * 0: all attributes\
+   * 1: color\
+   * 2: details\
+   * 3: pose
+   * @param waifu - a waifu or her seeds
+   */
   genGrid(step: 1|2|3, waifu: SocketWaifu | string): Promise<grid>;
 
   /**
