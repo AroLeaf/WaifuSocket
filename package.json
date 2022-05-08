@@ -11,10 +11,7 @@
     "name": "AroLeaf",
     "url": "https://leaf.moe"
   },
-  "exports": {
-    "import": "./index.mjs",
-    "require": "./index.js"
-  },
+  "main": "index.js",
   "dependencies": {
     "axios": "^0.27.2",
     "ws": "^8.6.0",

@@ -27,7 +27,7 @@ export interface DetailedWaifu extends RestWaifu {
 }
 
 
-export class Socket {
+declare class Socket {
   sequence: number;
   token: string;
   restart: boolean;
@@ -39,7 +39,7 @@ export class Socket {
 }
 
 
-export class Rest {
+declare class Rest {
   axios: AxiosInstance;
   cookies: string[];
   constructor(base: string);
@@ -53,9 +53,9 @@ export class Rest {
 /**
  * The main WaifuSocket class
  */
-export class WaifuSocket {
-  socket: Socket;
-  rest: Rest;
+export default class WaifuSocket {
+  private socket: Socket;
+  private rest: Rest;
   
   /**
    * Logs in and connects to the websocket.

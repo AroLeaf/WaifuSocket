@@ -50,8 +50,4 @@ class WaifuSocket {
 }
 
 
-module.exports = {
-  WaifuSocket,
-  Socket,
-  Rest,
-}
+module.exports = WaifuSocket;
